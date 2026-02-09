@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TFT Set 16 Assets Visual Test</title>
+  <style>
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #0a0e27;
+      color: #fff;
+    }
+    h1, h2 {
+      color: #f0b90b;
+    }
+    .section {
+      margin: 40px 0;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .champion-card {
+      background: #1a1f3a;
+      border-radius: 8px;
+      padding: 8px;
+      text-align: center;
+      border: 2px solid #2a2f4a;
+      transition: transform 0.2s;
+    }
+    .champion-card:hover {
+      transform: scale(1.05);
+      border-color: #f0b90b;
+    }
+    .champion-card img {
+      width: 100%;
+      border-radius: 4px;
+      aspect-ratio: 1;
+      object-fit: cover;
+    }
+    .champion-name {
+      margin-top: 8px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .champion-cost {
+      font-size: 12px;
+      color: #888;
+      margin-top: 4px;
+    }
+    .cost-1 { border-color: #808080; }
+    .cost-2 { border-color: #1eff00; }
+    .cost-3 { border-color: #0070ff; }
+    .cost-4 { border-color: #d238d2; }
+    .cost-5 { border-color: #ffb900; }
+    .trait-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 12px;
+    }
+    .trait-card {
+      background: #1a1f3a;
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid #2a2f4a;
+    }
+    .trait-card img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+    }
+    .trait-name {
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .info {
+      background: #1a1f3a;
+      border-left: 4px solid #f0b90b;
+      padding: 16px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎮 TFT Set 16 Assets Visual Test</h1>
+  
+  <div class="info">
+    <strong>Source:</strong> Community Dragon API<br>
+    <strong>Set:</strong> TFT Set 16 (Lore & Legends)<br>
+    <strong>Version:</strong> 16.3.1<br>
+    <strong>Total Champions:</strong> 105 | <strong>Total Traits:</strong> 53
+  </div>
+
+  <div class="section">
+    <h2>🏆 Champions by Cost</h2>
+    
+    <h3>1-Cost Units</h3>
+    <div class="grid" id="cost-1"></div>
+    
+    <h3>2-Cost Units</h3>
+    <div class="grid" id="cost-2"></div>
+    
+    <h3>3-Cost Units</h3>
+    <div class="grid" id="cost-3"></div>
+    
+    <h3>4-Cost Units</h3>
+    <div class="grid" id="cost-4"></div>
+    
+    <h3>5-Cost Units</h3>
+    <div class="grid" id="cost-5"></div>
+  </div>
+
+  <div class="section">
+    <h2>✨ Traits</h2>
+    <div class="trait-grid" id="traits"></div>
+  </div>
+
+  <script>
+    const BASE_URL = 'https://raw.communitydragon.org/latest/game/assets';
+    
+    // Sample champions data
+    const champions = {
+      1: [
+        { name: 'Lulu', icon: 'characters/tft16_lulu/skins/base/images/tft16_lulu_splash_tile_0.tft_set16.png' },
+        { name: 'Rumble', icon: 'characters/tft16_rumble/skins/base/images/tft16_rumble_splash_tile_0.tft_set16.png' },
+        { name: 'Poppy', icon: 'characters/tft16_poppy/skins/base/images/tft16_poppy_splash_tile_0.tft_set16.png' },
+      ],
+      2: [
+        { name: 'Tristana', icon: 'characters/tft16_tristana/skins/base/images/tft16_tristana_splash_tile_0.tft_set16.png' },
+        { name: 'Teemo', icon: 'characters/tft16_teemo/skins/base/images/tft16_teemo_splash_tile_0.tft_set16.png' },
+      ],
+      3: [
+        { name: 'Nautilus', icon: 'characters/tft16_nautilus/skins/base/images/tft16_nautilus_splash_tile_0.tft_set16.png' },
+      ],
+      4: [],
+      5: []
+    };
+    
+    const traits = [
+      { name: 'Yordle', icon: 'ux/traiticons/trait_icon_16_yordle.tft_set16.png' },
+      { name: 'Gunslinger', icon: 'ux/traiticons/trait_icon_16_gunslinger.tft_set16.png' },
+      { name: 'Arcanist', icon: 'ux/traiticons/trait_icon_6_arcanist.png' },
+      { name: 'Defender', icon: 'ux/traiticons/trait_icon_16_defender.tft_set16.png' },
+      { name: 'Longshot', icon: 'ux/traiticons/trait_icon_16_longshot.tft_set16.png' },
+      { name: 'Bilgewater', icon: 'ux/traiticons/trait_icon_16_bilgewater.tft_set16.png' },
+    ];
+    
+    // Render champions
+    for (let cost = 1; cost <= 5; cost++) {
+      const container = document.getElementById(`cost-${cost}`);
+      const champList = champions[cost] || [];
+      
+      champList.forEach(champ => {
+        const card = document.createElement('div');
+        card.className = `champion-card cost-${cost}`;
+        card.innerHTML = `
+          <img src="${BASE_URL}/${champ.icon}" alt="${champ.name}">
+          <div class="champion-name">${champ.name}</div>
+          <div class="champion-cost">${cost} 💰</div>
+        `;
+        container.appendChild(card);
+      });
+      
+      if (champList.length === 0) {
+        container.innerHTML = '<em style="color: #666;">Loading sample data...</em>';
+      }
+    }
+    
+    // Render traits
+    const traitsContainer = document.getElementById('traits');
+    traits.forEach(trait => {
+      const card = document.createElement('div');
+      card.className = 'trait-card';
+      card.innerHTML = `
+        <img src="${BASE_URL}/${trait.icon}" alt="${trait.name}">
+        <div class="trait-name">${trait.name}</div>
+      `;
+      traitsContainer.appendChild(card);
+    });
+  </script>
+</body>
+</html>
