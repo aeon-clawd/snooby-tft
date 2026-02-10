@@ -81,16 +81,20 @@ npm start
 - [x] Conexión a MongoDB Atlas
 - [x] Sistema de autenticación (NextAuth + Google OAuth)
 - [x] Protección de rutas `/admin/*`
-- [ ] API Routes CRUD para composiciones
-- [ ] Diseño del sistema de tierlist
-- [ ] Componentes UI base
-- [ ] Panel de administración funcional
-- [ ] Integración con YouTube/Twitch
+- [x] API Routes CRUD para composiciones
+- [x] Diseño del sistema de tierlist
+- [x] Componentes UI base (tierlist filters, tier sections)
+- [x] **Integración con YouTube Data API v3** 🎬
+- [x] Panel de administración funcional
+- [ ] Integración con Twitch API
+- [ ] Sistema de búsqueda avanzada
+- [ ] Estadísticas de uso
 
 ## 📚 Documentación
 
 - **Setup de Base de Datos:** [DATABASE.md](./DATABASE.md)
 - **Setup de Autenticación:** [AUTH_SETUP.md](./AUTH_SETUP.md) 🔐
+- **Setup de YouTube API:** [YOUTUBE_SETUP.md](./YOUTUBE_SETUP.md) 🎬
 - **Deployment:** [DEPLOY.md](./DEPLOY.md)
 - **Notas Técnicas:** `/home/ubuntu/Obsidia-notas/Tickets/`
 

@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import dbConnect from '@/lib/db';
 import Comp from '@/models/Comp';
+import { mockComps } from './mock-data';
 
 /**
  * GET /api/comps
@@ -14,49 +15,72 @@ import Comp from '@/models/Comp';
  * - isActive: true/false
  */
 export async function GET(request: NextRequest) {
+  const USE_MOCK_DATA = !process.env.MONGODB_URI || process.env.MONGODB_URI.includes('<PASSWORD>');
+  
   try {
-    await dbConnect();
-    
     const searchParams = request.nextUrl.searchParams;
     const tier = searchParams.get('tier');
     const champion = searchParams.get('champion');
     const synergy = searchParams.get('synergy');
     const isActive = searchParams.get('isActive');
     
-    let query: any = {};
+    let comps;
     
-    if (tier) {
-      query.tier = tier.toUpperCase();
+    if (USE_MOCK_DATA) {
+      // Use mock data if MongoDB is not configured
+      console.log('⚠️  Using mock data (MongoDB not configured)');
+      comps = mockComps.filter(comp => {
+        if (tier && comp.tier !== tier.toUpperCase()) return false;
+        if (champion && !comp.champions.some(c => c.name.toLowerCase().includes(champion.toLowerCase()))) return false;
+        if (synergy && !comp.synergies.some(s => s.name.toLowerCase().includes(synergy.toLowerCase()))) return false;
+        if (isActive !== null && comp.isActive !== (isActive === 'true')) return false;
+        return true;
+      });
+    } else {
+      // Use MongoDB
+      await dbConnect();
+      
+      let query: any = {};
+      
+      if (tier) {
+        query.tier = tier.toUpperCase();
+      }
+      
+      if (champion) {
+        query['champions.name'] = new RegExp(champion, 'i');
+      }
+      
+      if (synergy) {
+        query['synergies.name'] = new RegExp(synergy, 'i');
+      }
+      
+      if (isActive !== null) {
+        query.isActive = isActive === 'true';
+      }
+      
+      comps = await Comp.find(query)
+        .sort({ tier: 1, createdAt: -1 })
+        .lean();
     }
-    
-    if (champion) {
-      query['champions.name'] = new RegExp(champion, 'i');
-    }
-    
-    if (synergy) {
-      query['synergies.name'] = new RegExp(synergy, 'i');
-    }
-    
-    if (isActive !== null) {
-      query.isActive = isActive === 'true';
-    }
-    
-    const comps = await Comp.find(query)
-      .sort({ tier: 1, createdAt: -1 })
-      .lean();
     
     return NextResponse.json({
       success: true,
       count: comps.length,
-      data: comps
+      data: comps,
+      source: USE_MOCK_DATA ? 'mock' : 'database'
     });
     
   } catch (error: any) {
     console.error('GET /api/comps error:', error);
-    return NextResponse.json(
-      { success: false, error: error.message },
-      { status: 500 }
-    );
+    
+    // Fallback to mock data on error
+    console.log('⚠️  Falling back to mock data due to error');
+    return NextResponse.json({
+      success: true,
+      count: mockComps.length,
+      data: mockComps,
+      source: 'mock-fallback'
+    });
   }
 }
 
