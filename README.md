@@ -7,7 +7,7 @@ Web pública de tierlist de composiciones de Teamfight Tactics para **Snoodyboo*
 - **Framework:** Next.js 14 (App Router)
 - **Styling:** TailwindCSS
 - **Language:** TypeScript
-- **Database:** MongoDB Atlas (próximamente)
+- **Database:** MongoDB Atlas + Mongoose
 - **Auth:** NextAuth (próximamente)
 - **Deployment:** Vercel
 
@@ -27,8 +27,12 @@ snooby-tft/
 ├── lib/
 │   ├── utils/             # Utilidades (cn, etc.)
 │   ├── api/               # Lógica de API
-│   ├── db/                # Conexión a DB
+│   ├── mongodb.ts         # Conexión a MongoDB
 │   └── types/             # Definiciones TypeScript
+├── models/
+│   └── Comp.ts            # Modelo de composiciones
+├── scripts/
+│   └── seed-example.ts    # Seed de datos de ejemplo
 └── public/
     ├── images/            # Imágenes estáticas
     └── fonts/             # Fuentes personalizadas
@@ -36,12 +40,30 @@ snooby-tft/
 
 ## 🛠️ Desarrollo Local
 
+### Setup Inicial
+
 ```bash
 # Instalar dependencias
 npm install
 
+# Configurar variables de entorno
+cp .env.example .env.local
+# Editar .env.local con tu MongoDB URI
+```
+
+**Para configuración de MongoDB Atlas:** Ver [DATABASE.md](./DATABASE.md)
+
+### Comandos
+
+```bash
 # Modo desarrollo
 npm run dev
+
+# Probar conexión a base de datos
+npm run db:test
+
+# Poblar base de datos con ejemplos
+npm run seed
 
 # Build de producción
 npm run build
@@ -54,12 +76,21 @@ npm start
 
 - [x] Configuración inicial del proyecto
 - [x] Estructura de carpetas
+- [x] Schema de base de datos MongoDB
+- [x] Modelos Mongoose + TypeScript
+- [x] Conexión a MongoDB Atlas
+- [ ] API Routes CRUD para composiciones
 - [ ] Diseño del sistema de tierlist
 - [ ] Componentes UI base
-- [ ] Integración con MongoDB Atlas
 - [ ] Panel de administración
 - [ ] Sistema de autenticación
 - [ ] Integración con YouTube/Twitch
+
+## 📚 Documentación
+
+- **Setup de Base de Datos:** [DATABASE.md](./DATABASE.md)
+- **Deployment:** [DEPLOY.md](./DEPLOY.md)
+- **Notas Técnicas:** `/home/ubuntu/Obsidia-notas/Tickets/tk-iy81pckx6057.md`
 
 ## 📝 Licencia
 
