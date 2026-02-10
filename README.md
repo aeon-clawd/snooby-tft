@@ -8,7 +8,7 @@ Web pública de tierlist de composiciones de Teamfight Tactics para **Snoodyboo*
 - **Styling:** TailwindCSS
 - **Language:** TypeScript
 - **Database:** MongoDB Atlas + Mongoose
-- **Auth:** NextAuth (próximamente)
+- **Auth:** NextAuth.js (Google OAuth + Credentials)
 - **Deployment:** Vercel
 
 ## 📁 Estructura del Proyecto
@@ -79,18 +79,20 @@ npm start
 - [x] Schema de base de datos MongoDB
 - [x] Modelos Mongoose + TypeScript
 - [x] Conexión a MongoDB Atlas
+- [x] Sistema de autenticación (NextAuth + Google OAuth)
+- [x] Protección de rutas `/admin/*`
 - [ ] API Routes CRUD para composiciones
 - [ ] Diseño del sistema de tierlist
 - [ ] Componentes UI base
-- [ ] Panel de administración
-- [ ] Sistema de autenticación
+- [ ] Panel de administración funcional
 - [ ] Integración con YouTube/Twitch
 
 ## 📚 Documentación
 
 - **Setup de Base de Datos:** [DATABASE.md](./DATABASE.md)
+- **Setup de Autenticación:** [AUTH_SETUP.md](./AUTH_SETUP.md) 🔐
 - **Deployment:** [DEPLOY.md](./DEPLOY.md)
-- **Notas Técnicas:** `/home/ubuntu/Obsidia-notas/Tickets/tk-iy81pckx6057.md`
+- **Notas Técnicas:** `/home/ubuntu/Obsidia-notas/Tickets/`
 
 ## 📝 Licencia
 
