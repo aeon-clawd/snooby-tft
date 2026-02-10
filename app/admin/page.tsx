@@ -61,7 +61,10 @@ export default function AdminPage() {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-            <div className="bg-white/5 border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-colors cursor-pointer">
+            <a
+              href="/admin/comps"
+              className="bg-white/5 border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-colors cursor-pointer"
+            >
               <div className="text-4xl mb-3">📊</div>
               <h3 className="text-white font-bold text-lg mb-2">
                 Manage Comps
@@ -69,7 +72,7 @@ export default function AdminPage() {
               <p className="text-blue-200 text-sm">
                 Create and edit TFT team compositions
               </p>
-            </div>
+            </a>
 
             <div className="bg-white/5 border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-colors cursor-pointer">
               <div className="text-4xl mb-3">👥</div>
